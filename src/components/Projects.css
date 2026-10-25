@@ -2,10 +2,15 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--grid-gap);
+  align-items: stretch;
 }
 
 .projects__grid--featured {
   margin-bottom: var(--grid-gap);
+}
+
+.project-card {
+  height: 100%;
 }
 
 .projects__more {

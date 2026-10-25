@@ -24,27 +24,33 @@ export function useActiveSection(ids: string[]): string {
   useEffect(() => {
     if (ids.length === 0) return
 
-    // Restore scroll position for a hash present at load when the browser has
-    // not already positioned the target section in the active band (refresh /
-    // direct-link restoration). Uses an instant jump so it never races the
-    // browser's own smooth anchor scroll.
-    const hash = window.location.hash.replace('#', '')
-    if (ids.includes(hash)) {
-      const el = document.getElementById(hash)
-      // On a cold load (refresh / direct link) the browser's own anchor
-      // scroll is unreliable and can leave the section just outside the
-      // active band. Always snap deterministically to the target offset so
-      // the correct section is both restored and highlighted.
-      if (el) {
-        const root = document.documentElement
-        const prev = root.style.scrollBehavior
-        root.style.scrollBehavior = 'auto'
-        const rect = el.getBoundingClientRect()
-        const targetY = Math.max(0, window.scrollY + rect.top - NAVBAR_OFFSET + 4)
-        window.scrollTo(0, targetY)
-        root.style.scrollBehavior = prev
-      }
+    // Disable the browser's own scroll restoration so a hash URL always
+    // restores deterministically to its section (and un-hashed URLs start
+    // at the top), independent of reload timing/layout shifts.
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual'
     }
+
+    const restoreHash = () => {
+      const hash = window.location.hash.replace('#', '')
+      if (!ids.includes(hash)) return
+      const el = document.getElementById(hash)
+      if (!el) return
+      // Cold-load (refresh / direct link) anchor scroll is unreliable;
+      // snap deterministically to the target offset so the correct section
+      // is both restored and highlighted. Re-run on `load` to absorb any
+      // layout shifts from fonts/3D scene after first paint.
+      const root = document.documentElement
+      const prev = root.style.scrollBehavior
+      root.style.scrollBehavior = 'auto'
+      const rect = el.getBoundingClientRect()
+      const targetY = Math.max(0, window.scrollY + rect.top - NAVBAR_OFFSET + 4)
+      window.scrollTo(0, targetY)
+      root.style.scrollBehavior = prev
+    }
+
+    restoreHash()
+    window.addEventListener('load', restoreHash)
 
     let ticking = false
 
@@ -92,6 +98,7 @@ export function useActiveSection(ids: string[]): string {
     window.addEventListener('resize', onScroll)
 
     return () => {
+      window.removeEventListener('load', restoreHash)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
     }
