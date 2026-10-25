@@ -147,6 +147,28 @@
   }
 }
 
+/* DOM-overlay logos rendered inside the Three.js scene */
+.hero-logo {
+  pointer-events: none;
+}
+.hero-logo img {
+  display: block;
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.55));
+}
+
+/* reduce logo count on smaller screens, keep the most recognizable ones */
+@media (max-width: 980px) {
+  .hero-logo--bg {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-logo--mid {
+    display: none;
+  }
+}
+
 @media (max-width: 980px) {
   .hero__grid {
     grid-template-columns: 1fr;

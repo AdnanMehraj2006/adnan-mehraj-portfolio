@@ -33,7 +33,7 @@
 
   --space-eyebrow: 18px;
   --space-heading-desc: 14px;
-  --space-desc-content: clamp(38px, 5vw, 56px);
+  --space-desc-content: clamp(28px, 4vw, 44px);
   --grid-gap: 20px;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -182,7 +182,7 @@ ol {
 
 /* section shell */
 .section {
-  padding-block: clamp(72px, 9vw, 120px);
+  padding-block: clamp(48px, 6vw, 80px);
   position: relative;
   scroll-margin-top: calc(var(--nav-h) - 4px);
 }
