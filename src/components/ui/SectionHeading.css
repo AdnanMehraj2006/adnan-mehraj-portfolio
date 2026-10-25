@@ -1,0 +1,35 @@
+.section-heading {
+  margin-bottom: clamp(36px, 5vw, 56px);
+  max-width: 680px;
+}
+
+.section-heading__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+  margin-bottom: 16px;
+}
+
+.section-heading__dash {
+  width: 30px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.6;
+}
+
+.section-heading__title {
+  font-size: clamp(28px, 4.4vw, 46px);
+  font-weight: 600;
+}
+
+.section-heading__desc {
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.65;
+}

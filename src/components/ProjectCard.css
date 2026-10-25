@@ -1,0 +1,190 @@
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.35s, box-shadow 0.35s, transform 0.15s ease-out;
+  will-change: transform;
+}
+.project-card:hover {
+  border-color: rgba(86, 217, 255, 0.35);
+  box-shadow: var(--shadow-card);
+}
+.project-card.is-focused {
+  border-color: rgba(198, 255, 77, 0.5);
+  box-shadow: 0 0 0 1px rgba(198, 255, 77, 0.3), 0 20px 60px -30px rgba(198, 255, 77, 0.35);
+}
+
+.project-card__preview {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(180deg, #0d121b, #090c13);
+  border-bottom: 1px solid var(--line);
+}
+
+.project-card__preview-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  background: rgba(8, 10, 15, 0.7);
+  border: 1px solid var(--line);
+  padding: 4px 9px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.project-card__featured {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  background: rgba(198, 255, 77, 0.12);
+  border: 1px solid rgba(198, 255, 77, 0.3);
+  padding: 4px 9px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.project-card__body {
+  padding: 22px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.project-card__category {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--accent-2);
+  text-transform: uppercase;
+}
+
+.project-card__name {
+  font-size: 22px;
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.project-card__tagline {
+  margin-top: 4px;
+  font-size: 15px;
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+.project-card__desc {
+  margin-top: 12px;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.project-card__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 18px;
+}
+.project-card__tech {
+  font-size: 11.5px;
+  color: var(--text-soft);
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+
+.project-card__toggle {
+  margin-top: 18px;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+.project-card__toggle:hover {
+  color: var(--text);
+}
+.project-card__toggle svg {
+  transition: transform 0.25s var(--ease-out);
+}
+.project-card__toggle svg.rotate {
+  transform: rotate(180deg);
+}
+
+.project-card__highlights {
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface-2);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.project-card__highlight {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  font-size: 13.5px;
+  color: var(--text-soft);
+}
+.project-card__highlight-mark {
+  color: var(--accent);
+  font-size: 12px;
+}
+
+.project-card__actions {
+  margin-top: auto;
+  padding-top: 22px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.project-card__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-soft);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 10px 18px;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.project-card__action:hover {
+  color: var(--text);
+  border-color: var(--muted-2);
+}
+.project-card__action--demo {
+  color: var(--accent);
+  border-color: rgba(198, 255, 77, 0.35);
+  background: var(--accent-soft);
+}
+.project-card__action--demo:hover {
+  border-color: var(--accent);
+}
+
+@media (max-width: 720px) {
+  .project-card__body {
+    padding: 20px 18px 20px;
+  }
+  .project-card__action {
+    flex: 1;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,28 @@
+.projects__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.projects__grid--featured {
+  margin-bottom: 36px;
+}
+
+.projects__more {
+  margin-top: 44px;
+  text-align: center;
+}
+
+@media (max-width: 1020px) {
+  .projects__grid,
+  .projects__grid--featured {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 680px) {
+  .projects__grid,
+  .projects__grid--featured {
+    grid-template-columns: 1fr;
+  }
+}

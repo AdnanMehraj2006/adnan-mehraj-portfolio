@@ -1,0 +1,206 @@
+/* ============================================================
+   AM.dev — design system
+   ============================================================ */
+
+:root {
+  --bg: #080a0f;
+  --surface: #11151d;
+  --surface-2: #151b27;
+  --surface-3: #1a212f;
+  --line: rgba(241, 245, 249, 0.08);
+  --line-strong: rgba(241, 245, 249, 0.16);
+
+  --text: #f1f5f9;
+  --text-soft: #cbd5e1;
+  --muted: #94a3b8;
+  --muted-2: #64748b;
+
+  --accent: #c6ff4d;
+  --accent-soft: rgba(198, 255, 77, 0.12);
+  --accent-2: #56d9ff;
+  --accent-2-soft: rgba(86, 217, 255, 0.1);
+  --violet: #a78bfa;
+  --magenta: #f0abfc;
+
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --radius: 14px;
+  --radius-lg: 20px;
+  --maxw: 1180px;
+  --nav-h: 68px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --shadow-card: 0 18px 60px -30px rgba(0, 0, 0, 0.8);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  margin: 0;
+  font-weight: 600;
+  color: var(--text);
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+::selection {
+  background: var(--accent);
+  color: #080a0f;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #232b3a;
+  border-radius: 8px;
+  border: 3px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2e3747;
+}
+
+/* ---- utilities ---- */
+
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.gradient-text {
+  background: linear-gradient(100deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* fine technical grid background for sections */
+.tech-grid {
+  background-image:
+    linear-gradient(rgba(241, 245, 249, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(241, 245, 249, 0.035) 1px, transparent 1px);
+  background-size: 52px 52px;
+}
+
+.tech-grid-fade {
+  background-image:
+    radial-gradient(1200px 600px at 50% -10%, rgba(86, 217, 255, 0.06), transparent 60%),
+    linear-gradient(rgba(241, 245, 249, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(241, 245, 249, 0.03) 1px, transparent 1px);
+  background-size: auto, 56px 56px, 56px 56px;
+}
+
+/* section shell */
+.section {
+  padding-block: clamp(72px, 9vw, 120px);
+  position: relative;
+  scroll-margin-top: calc(var(--nav-h) - 4px);
+}
+
+/* ---- reveal/scroll animations (CSS fallback for reduced motion) ---- */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.anim-fade-up {
+  animation: fadeUp 0.8s var(--ease-out) both;
+}
+
+/* ---- misc ---- */
+@media (max-width: 720px) {
+  .container {
+    padding-inline: 18px;
+  }
+}
