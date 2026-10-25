@@ -45,6 +45,21 @@ try {
     heroActions.count === 2 && !heroActions.hasIcons,
   )
   report('hero webgl label removed', !(await page.$('.hero__stage-label')))
+  report(
+    'legacy hero stage removed',
+    (await page.$('.hero__stage, .hero__fallback')) === null,
+  )
+
+  const scene = await page.evaluate(() => {
+    const el = document.querySelector('.hero__scene')
+    return {
+      present: !!el,
+      canvas: !!(el && el.querySelector('canvas')),
+      fallback: !!(el && el.querySelector('.hero__scene-fallback')),
+    }
+  })
+  report('hero 3D core mounted (desktop)', scene.present && scene.canvas)
+  report('hero 3D fallback present', scene.present && (scene.canvas || scene.fallback))
 
   // personal introduction
   const intro = await page.evaluate(() => ({
@@ -69,17 +84,17 @@ try {
   report('hero metadata boxes removed', metaRemoved)
 
 
-  // scroll indicator: horizontally centered on the hero container
+  // scroll indicator: horizontally centered on the hero content
   const scrollCheck = await page.evaluate(() => {
-    const container = document.querySelector('.hero .container')
+    const grid = document.querySelector('.hero__grid')
     const scrollEl = document.querySelector('.hero__scroll')
-    if (!container || !scrollEl) return null
-    const c = container.getBoundingClientRect()
+    if (!grid || !scrollEl) return null
+    const g = grid.getBoundingClientRect()
     const s = scrollEl.getBoundingClientRect()
-    return { delta: Math.abs(s.left + s.width / 2 - (c.left + c.width / 2)) }
+    return { delta: Math.abs(s.left + s.width / 2 - (g.left + g.width / 2)) }
   })
   report(
-    'scroll indicator centered on hero container',
+    'scroll indicator centered on hero content',
     !!scrollCheck && scrollCheck.delta <= 1,
     scrollCheck ? `offset ${scrollCheck.delta.toFixed(1)}px` : 'missing',
   )
@@ -531,13 +546,13 @@ try {
       const containerOverflow = container ? container.scrollWidth > container.clientWidth + 1 : false
       const clipped = buttons.some((b) => b.right > window.innerWidth + 1 || b.left < -1)
       const sameLine = buttons.length === 2 && Math.abs(buttons[1].top - buttons[0].top) < 2
-      const heroContainer = document.querySelector('.hero .container')
+      const heroGrid = document.querySelector('.hero__grid')
       const scrollEl = document.querySelector('.hero__scroll')
       let scrollDelta = Infinity
-      if (heroContainer && scrollEl) {
-        const c = heroContainer.getBoundingClientRect()
+      if (heroGrid && scrollEl) {
+        const g = heroGrid.getBoundingClientRect()
         const s = scrollEl.getBoundingClientRect()
-        scrollDelta = Math.abs(s.left + s.width / 2 - (c.left + c.width / 2))
+        scrollDelta = Math.abs(s.left + s.width / 2 - (g.left + g.width / 2))
       }
       return {
         overflowGlobal,

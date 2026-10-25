@@ -15,11 +15,21 @@ const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
 export function Hero() {
   const reducedMotion = usePrefersReducedMotion()
 
-
   return (
     <section id="home" className="hero tech-grid-fade">
       <div className="container hero__grid">
-        <div className="hero__left">
+        <div className="hero__scene" aria-hidden="true">
+          {reducedMotion ? (
+            <div className="hero__scene-fallback" />
+          ) : (
+            <ErrorBoundary fallback={<div className="hero__scene-fallback" />}>
+              <Suspense fallback={<div className="hero__scene-fallback" />}>
+                <HeroScene />
+              </Suspense>
+            </ErrorBoundary>
+          )}
+        </div>
+        <div className="hero__content">
           <motion.div
             className="hero__kicker"
             initial={{ opacity: 0, y: 14 }}
@@ -78,18 +88,6 @@ export function Hero() {
               </Button>
             </Magnetic>
           </motion.div>
-        </div>
-
-        <div className="hero__stage" aria-hidden="true">
-          {reducedMotion ? (
-            <div className="hero__fallback" />
-          ) : (
-            <ErrorBoundary fallback={<div className="hero__fallback" />}>
-              <Suspense fallback={<div className="hero__fallback" />}>
-                <HeroScene />
-              </Suspense>
-            </ErrorBoundary>
-          )}
         </div>
       </div>
 
