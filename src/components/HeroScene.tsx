@@ -19,16 +19,21 @@ interface LogoPlacement {
   speed: number
   phase: number
   layer: 'fg' | 'mid' | 'bg'
+  mobile?: boolean
+  hide?: boolean
 }
 
 const PLACEMENTS: LogoPlacement[] = [
-  // foreground — largest, nearest
-  { key: 'javascript', position: [-1.1, 0.2, 1.2], size: 168, speed: 0.35, phase: 0.0, layer: 'fg' },
-  { key: 'react', position: [1.5, 0.6, 0.95], size: 138, speed: 0.45, phase: 1.1, layer: 'fg' },
-  { key: 'java', position: [-2.0, -1.0, 0.7], size: 124, speed: 0.5, phase: 3.4, layer: 'fg' },
-  { key: 'python', position: [2.0, -1.1, 0.6], size: 120, speed: 0.48, phase: 4.7, layer: 'fg' },
-  { key: 'dsa', position: [-0.55, -1.55, 0.5], size: 118, speed: 0.4, phase: 4.1, layer: 'fg' },
-  { key: 'cybersecurity', position: [0.8, -1.65, 0.4], size: 112, speed: 0.42, phase: 0.6, layer: 'fg' },
+  // A hidden placeholder is deliberately first so the first <Html> mount
+  // (which is otherwise dropped in some browsers) is the invisible one.
+  { key: 'mysql', position: [-5, -5, -5], size: 10, speed: 0.3, phase: 0, layer: 'fg', hide: true },
+  // foreground — largest, nearest (the five shown on mobile)
+  { key: 'react', position: [2.0, 1.1, -0.2], size: 130, speed: 0.45, phase: 1.1, layer: 'fg', mobile: true },
+  { key: 'java', position: [-2.0, -1.2, -0.3], size: 120, speed: 0.5, phase: 3.4, layer: 'fg', mobile: true },
+  { key: 'python', position: [2.1, -1.3, -0.5], size: 112, speed: 0.48, phase: 4.7, layer: 'fg', mobile: true },
+  { key: 'rust', position: [-2.1, 1.2, -0.4], size: 116, speed: 0.48, phase: 3.7, layer: 'fg', mobile: true },
+  { key: 'dsa', position: [-0.55, -1.9, 0.3], size: 112, speed: 0.4, phase: 4.1, layer: 'fg' },
+  { key: 'cybersecurity', position: [0.8, -2.0, 0.2], size: 106, speed: 0.42, phase: 0.6, layer: 'fg' },
 
   // middle ground
   { key: 'typescript', position: [2.7, 1.35, -0.2], size: 100, speed: 0.48, phase: 2.0, layer: 'mid' },
@@ -36,7 +41,6 @@ const PLACEMENTS: LogoPlacement[] = [
   { key: 'nodejs', position: [-3.3, -0.35, -0.5], size: 94, speed: 0.45, phase: 1.7, layer: 'mid' },
   { key: 'git', position: [3.3, -0.45, -0.5], size: 94, speed: 0.5, phase: 5.2, layer: 'mid' },
   { key: 'cplusplus', position: [-3.6, 2.3, -0.7], size: 88, speed: 0.5, phase: 2.8, layer: 'mid' },
-  { key: 'rust', position: [3.6, 2.35, -0.8], size: 88, speed: 0.48, phase: 3.7, layer: 'mid' },
   { key: 'android', position: [0.25, 2.95, -0.4], size: 96, speed: 0.42, phase: 2.6, layer: 'mid' },
   { key: 'problemSolving', position: [-0.25, 1.85, -0.6], size: 92, speed: 0.44, phase: 1.8, layer: 'mid' },
   { key: 'vite', position: [3.0, 2.85, -0.8], size: 84, speed: 0.48, phase: 1.1, layer: 'mid' },
@@ -51,6 +55,7 @@ const PLACEMENTS: LogoPlacement[] = [
   { key: 'csharp', position: [-1.0, -3.2, -1.8], size: 64, speed: 0.5, phase: 4.5, layer: 'bg' },
   { key: 'php', position: [2.5, -3.1, -1.6], size: 66, speed: 0.52, phase: 5.3, layer: 'bg' },
   { key: 'nextjs', position: [3.2, 0.85, -1.9], size: 70, speed: 0.4, phase: 0.8, layer: 'bg' },
+  { key: 'javascript', position: [0, 0, -0.3], size: 150, speed: 0.35, phase: 0.0, layer: 'fg', mobile: true },
 ]
 
 const dataUrlCache = new Map<string, string>()
@@ -73,7 +78,7 @@ function motionFactor() {
 
 function TechLogo({ placement }: { placement: LogoPlacement }) {
   const ref = useRef<THREE.Group>(null)
-  const { key, position, size, speed, phase, layer } = placement
+  const { key, position, size, speed, phase, layer, mobile, hide } = placement
   const responsiveSize = Math.round(size * motionFactor())
 
   useFrame((state) => {
@@ -103,12 +108,13 @@ function TechLogo({ placement }: { placement: LogoPlacement }) {
         center
         transform
         zIndexRange={[20, 0]}
-        wrapperClass={`hero-logo hero-logo--${layer}`}
+        wrapperClass={`hero-logo hero-logo--${layer}${mobile ? ' hero-logo--keep' : ''}${hide ? ' hero-logo--hidden' : ''}`}
         style={{ pointerEvents: 'none' }}
       >
         <img
           src={logoDataUrl(key)}
-          alt=""
+          alt={LOGOS[key].name}
+          data-logo={key}
           style={{
             width: `${responsiveSize}px`,
             height: `${responsiveSize}px`,

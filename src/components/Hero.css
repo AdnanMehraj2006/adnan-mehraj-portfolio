@@ -151,6 +151,9 @@
 .hero-logo {
   pointer-events: none;
 }
+.hero-logo--hidden {
+  display: none !important;
+}
 .hero-logo img {
   display: block;
   filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.55));
@@ -164,8 +167,11 @@
 }
 
 @media (max-width: 600px) {
-  .hero-logo--mid {
+  .hero-logo {
     display: none;
+  }
+  .hero-logo--keep {
+    display: inline-block;
   }
 }
 
