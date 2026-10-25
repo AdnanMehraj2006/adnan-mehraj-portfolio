@@ -133,7 +133,7 @@
   inset-inline: 0;
   margin-inline: auto;
   width: fit-content;
-  bottom: 22px;
+  bottom: 34px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -200,9 +200,9 @@
   }
 }
 
-/* slide desktop scroll indicator a touch lower */
+/* slide desktop scroll indicator further down */
 @media (min-width: 981px) {
   .hero__scroll {
-    bottom: 32px;
+    bottom: 48px;
   }
 }
