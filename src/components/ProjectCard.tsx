@@ -1,5 +1,5 @@
 import { useRef, useState, type MouseEvent } from 'react'
-import { ExternalLink, ChevronDown, Sparkles } from 'lucide-react'
+import { ExternalLink, ChevronDown, Sparkles, Download } from 'lucide-react'
 import { GithubIcon } from './ui/BrandIcons'
 import type { Project } from '../data/projects'
 import { ProjectPreview } from './ProjectPreviews'
@@ -50,6 +50,11 @@ export function ProjectCard({ project, focused }: ProjectCardProps) {
       <div className="project-card__body">
         <div className="project-card__top">
           <span className="project-card__category mono">{project.category}</span>
+          {project.release ? (
+            <span className="project-card__release-badge mono">
+              RELEASED · {project.release.version}
+            </span>
+          ) : null}
         </div>
         <h3 className="project-card__name">{project.name}</h3>
         <p className="project-card__tagline">{project.tagline}</p>
@@ -94,6 +99,16 @@ export function ProjectCard({ project, focused }: ProjectCardProps) {
           >
             <GithubIcon size={16} /> Source
           </a>
+          {project.release ? (
+            <a
+              href={project.release.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-card__action project-card__action--release"
+            >
+              <Download size={16} /> Download {project.release.version}
+            </a>
+          ) : null}
           {project.demo ? (
             <a
               href={project.demo}

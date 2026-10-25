@@ -54,10 +54,26 @@ export const skillGroups: SkillGroup[] = [
     id: 'tools',
     title: 'Tools & Workflow',
     skills: [
-      { name: 'Git', status: 'demonstrated', relatedProjects: [] },
-      { name: 'GitHub', status: 'demonstrated', relatedProjects: [] },
-      { name: 'Browser Developer Tools', status: 'demonstrated', relatedProjects: [] },
-      { name: 'Debugging & Testing', status: 'demonstrated', relatedProjects: [] },
+      {
+        name: 'Git',
+        status: 'demonstrated',
+        relatedProjects: ['clipmind', 'lawmitra', 'streamverse', 'cardshield', '1clickos', 'dsa'],
+      },
+      {
+        name: 'GitHub',
+        status: 'demonstrated',
+        relatedProjects: ['clipmind', 'lawmitra', 'streamverse', 'cardshield', '1clickos', 'dsa'],
+      },
+      {
+        name: 'Browser Developer Tools',
+        status: 'demonstrated',
+        relatedProjects: ['lawmitra', 'streamverse', 'cardshield', '1clickos'],
+      },
+      {
+        name: 'Debugging & Testing',
+        status: 'demonstrated',
+        relatedProjects: ['clipmind', 'lawmitra', 'streamverse', 'cardshield'],
+      },
     ],
   },
   {
@@ -71,6 +87,3 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
 ]
-
-/** Flat list for the accessibility-oriented list fallback. */
-export const allSkills: Skill[] = skillGroups.flatMap((g) => g.skills)

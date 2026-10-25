@@ -30,7 +30,7 @@
 .skills__groups {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
+  gap: var(--grid-gap);
 }
 
 .skills__group {

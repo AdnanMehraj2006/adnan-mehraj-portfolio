@@ -7,16 +7,16 @@ export interface ProfileLink {
 
 export const profiles: ProfileLink[] = [
   {
+    id: 'email',
+    label: 'Email',
+    url: 'mailto:adnanmehraj@kcet.edu.in',
+    handle: 'adnanmehraj@kcet.edu.in',
+  },
+  {
     id: 'github',
     label: 'GitHub',
     url: 'https://github.com/AdnanMehraj2006',
     handle: '@AdnanMehraj2006',
-  },
-  {
-    id: 'linkedin',
-    label: 'LinkedIn',
-    url: 'https://www.linkedin.com/in/adnan-mehraj-611904344/',
-    handle: 'in/adnan-mehraj',
   },
   {
     id: 'leetcode',
@@ -29,6 +29,30 @@ export const profiles: ProfileLink[] = [
     label: 'GeeksforGeeks',
     url: 'https://www.geeksforgeeks.org/profile/adnanmehraj2006',
     handle: 'adnanmehraj2006',
+  },
+  {
+    id: 'linkedin',
+    label: 'LinkedIn',
+    url: 'https://www.linkedin.com/in/adnan-mehraj-611904344/',
+    handle: 'in/adnan-mehraj',
+  },
+  {
+    id: 'x',
+    label: 'X',
+    url: 'https://x.com/AdnanMehraj2006',
+    handle: '@AdnanMehraj2006',
+  },
+  {
+    id: 'instagram',
+    label: 'Instagram',
+    url: 'https://www.instagram.com/adn4nmehraj',
+    handle: '@adn4nmehraj',
+  },
+  {
+    id: 'snapchat',
+    label: 'Snapchat',
+    url: 'https://snapchat.com/add/adn4n.mehraj',
+    handle: '@adn4n.mehraj',
   },
 ]
 

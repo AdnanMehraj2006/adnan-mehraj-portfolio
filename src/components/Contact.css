@@ -1,8 +1,4 @@
 .contact__panel {
-  display: grid;
-  grid-template-columns: 1fr 280px;
-  gap: 30px;
-  align-items: center;
   background: linear-gradient(180deg, var(--surface), var(--surface));
   border: 1px solid var(--line);
   border-radius: 24px;
@@ -68,57 +64,14 @@
   color: var(--accent-2);
 }
 
-.contact__orb {
-  position: relative;
-  width: 200px;
-  height: 200px;
-  margin: 0 auto;
+.contact__link--email .contact__link-handle {
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
-.contact__orb-core {
-  position: absolute;
-  inset: 62px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, var(--accent), rgba(198, 255, 77, 0.2));
-  box-shadow: 0 0 40px -6px rgba(198, 255, 77, 0.6);
-}
-.contact__orb-ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 1px solid rgba(86, 217, 255, 0.4);
-  animation: orbSpin 14s linear infinite;
-}
-.contact__orb-ring::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--accent-2);
-}
-.contact__orb-ring--2 {
-  inset: 24px;
-  border-color: rgba(198, 255, 77, 0.3);
-  animation-direction: reverse;
-  animation-duration: 10s;
-}
-@keyframes orbSpin {
-  to {
-    transform: rotate(360deg);
-  }
+.contact__link-mail {
+  display: inline-flex;
 }
 
-@media (max-width: 860px) {
-  .contact__panel {
-    grid-template-columns: 1fr;
-  }
-  .contact__orb {
-    order: -1;
-    transform: scale(0.8);
-  }
-}
 @media (max-width: 560px) {
   .contact__links {
     grid-template-columns: 1fr;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type MouseEvent } from 'react'
 import { Menu, X } from 'lucide-react'
 import { siteConfig } from '../config/site'
 import { useActiveSection } from '../hooks/useActiveSection'
@@ -17,6 +17,12 @@ const NAV_LINKS = [
 ] as const
 
 const SECTION_IDS = NAV_LINKS.map((link) => link.id)
+
+const NAVBAR_OFFSET = 68
+
+function navBehavior() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+}
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -48,10 +54,39 @@ export function Navbar() {
 
   const close = () => setMenuOpen(false)
 
+  const scrollToSection = (id: string, behavior: ScrollBehavior = navBehavior()) => {
+    const el = document.getElementById(id)
+    if (!el) return
+    const top = Math.max(0, el.getBoundingClientRect().top + window.scrollY - NAVBAR_OFFSET + 4)
+    window.scrollTo({ top, behavior })
+  }
+
+  // Deterministic nav: update the hash (keeps Back/Forward) and programmatically
+  // scroll to the exact target offset, so the displayed section always matches
+  // the highlighted nav item — no competing/aborted native smooth-scrolls.
+  const goTo = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
+    event.preventDefault()
+    if (window.location.hash !== `#${id}`) history.pushState(null, '', `#${id}`)
+    scrollToSection(id)
+  }
+
+  useEffect(() => {
+    const onPop = () => {
+      const hash = window.location.hash.replace('#', '')
+      if ((SECTION_IDS as string[]).includes(hash)) scrollToSection(hash, 'auto')
+    }
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [])
+
   return (
     <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="container navbar__inner">
-        <a href="#home" className="navbar__brand" onClick={close}>
+        <a
+          href="#home"
+          className="navbar__brand"
+          onClick={(event) => goTo(event, 'home')}
+        >
           <span className="navbar__logo mono">AM.dev</span>
           <span className="navbar__status" aria-hidden="true">
             <span className="navbar__status-dot" />
@@ -66,6 +101,7 @@ export function Navbar() {
               href={`#${link.id}`}
               className={`navbar__link mono ${active === link.id ? 'is-active' : ''}`}
               aria-current={active === link.id ? 'true' : undefined}
+              onClick={(event) => goTo(event, link.id)}
             >
               {link.label}
             </a>
@@ -106,7 +142,10 @@ export function Navbar() {
                 key={link.id}
                 href={`#${link.id}`}
                 className={`navbar__moblink mono ${active === link.id ? 'is-active' : ''}`}
-                onClick={close}
+                onClick={(event) => {
+                  goTo(event, link.id)
+                  close()
+                }}
               >
                 <span className="navbar__mobnum">0{NAV_LINKS.indexOf(link) + 1}</span>
                 {link.label}

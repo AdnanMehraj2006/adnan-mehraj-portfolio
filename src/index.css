@@ -31,6 +31,11 @@
   --maxw: 1180px;
   --nav-h: 68px;
 
+  --space-eyebrow: 18px;
+  --space-heading-desc: 14px;
+  --space-desc-content: clamp(38px, 5vw, 56px);
+  --grid-gap: 20px;
+
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --shadow-card: 0 18px 60px -30px rgba(0, 0, 0, 0.8);
 }

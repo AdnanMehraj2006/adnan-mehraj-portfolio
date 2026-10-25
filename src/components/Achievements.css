@@ -1,11 +1,13 @@
 .ach__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  gap: var(--grid-gap);
 }
 
 .ach__card {
   height: 100%;
+  display: flex;
+  flex-direction: column;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
@@ -48,23 +50,56 @@
   color: var(--muted);
 }
 
-.ach__foot {
-  margin-top: 40px;
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  padding: 18px 22px;
-  border: 1px dashed var(--line-strong);
-  border-radius: 14px;
-  background: rgba(17, 21, 29, 0.4);
-}
-.ach__foot-mark {
-  font-size: 20px;
-  color: var(--accent);
-}
-.ach__foot-text {
-  font-size: 14px;
+.ach__id {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 12px;
   color: var(--muted);
+}
+
+.ach__desc {
+  margin-top: 12px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.ach__skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 14px;
+}
+.ach__skill {
+  font-size: 11px;
+  color: var(--text-soft);
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+
+.ach__verify {
+  align-self: flex-start;
+  margin-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  border: 1px solid rgba(198, 255, 77, 0.35);
+  background: var(--accent-soft);
+  padding: 7px 14px;
+  border-radius: 999px;
+  transition: border-color 0.2s, box-shadow 0.2s, color 0.2s;
+}
+.ach__verify:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 24px -10px rgba(198, 255, 77, 0.5);
+}
+.ach__verify:focus-visible {
+  outline-color: var(--accent);
 }
 
 @media (max-width: 900px) {

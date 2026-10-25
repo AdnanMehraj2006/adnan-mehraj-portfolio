@@ -50,15 +50,6 @@ export function About() {
             </Reveal>
           ))}
         </div>
-
-        <Reveal delay={0.1}>
-          <div className="about__philosophy">
-            <span className="about__philosophy-mark mono">&gt;</span>
-            <p className="about__philosophy-text mono">
-              Understand the problem. Build the solution. Improve the details.
-            </p>
-          </div>
-        </Reveal>
       </div>
     </section>
   )

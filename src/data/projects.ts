@@ -16,6 +16,7 @@ export interface Project {
   highlights: string[]
   repo: string
   demo?: string
+  release?: { version: string; url: string }
   featured: boolean
   preview: ProjectPreviewKind
 }
@@ -38,6 +39,10 @@ export const projects: Project[] = [
       'Best-effort sensitive-content filtering',
     ],
     repo: 'https://github.com/AdnanMehraj2006/ClipMind',
+    release: {
+      version: 'v1.0.0',
+      url: 'https://github.com/AdnanMehraj2006/ClipMind/releases/tag/v1.0.0',
+    },
     featured: true,
     preview: 'clipboard',
   },
@@ -58,6 +63,7 @@ export const projects: Project[] = [
       'Privacy-conscious optional local history',
     ],
     repo: 'https://github.com/AdnanMehraj2006/LawMitra-Ai',
+    demo: 'https://adnanmehraj2006.github.io/LawMitra-Ai/',
     featured: true,
     preview: 'legal',
   },
@@ -78,6 +84,7 @@ export const projects: Project[] = [
       'Animated interface',
     ],
     repo: 'https://github.com/AdnanMehraj2006/StreamVerse',
+    demo: 'https://adnanmehraj2006.github.io/StreamVerse/',
     featured: true,
     preview: 'player',
   },
@@ -98,7 +105,7 @@ export const projects: Project[] = [
       'Client-side processing',
     ],
     repo: 'https://github.com/AdnanMehraj2006/CardShield',
-    demo: 'https://visitcardshield.pages.dev',
+    demo: 'https://adnanmehraj2006.github.io/CardShield/',
     featured: false,
     preview: 'card',
   },
@@ -118,6 +125,7 @@ export const projects: Project[] = [
       'Download sources clearly labeled when unverified',
     ],
     repo: 'https://github.com/AdnanMehraj2006/1ClickOS',
+    demo: 'http://1clickos.blogspot.com/',
     featured: false,
     preview: 'os',
   },

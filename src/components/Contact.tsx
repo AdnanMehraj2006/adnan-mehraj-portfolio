@@ -1,6 +1,14 @@
-import { Code2, GraduationCap, ExternalLink } from 'lucide-react'
+import { ExternalLink, Mail } from 'lucide-react'
 import type { ComponentType } from 'react'
-import { GithubIcon, LinkedinIcon } from './ui/BrandIcons'
+import {
+  GFGIcon,
+  GithubIcon,
+  InstagramIcon,
+  LeetCodeIcon,
+  LinkedinIcon,
+  SnapchatIcon,
+  XIcon,
+} from './ui/BrandIcons'
 import { profiles } from '../data/profiles'
 import { SectionHeading } from './ui/SectionHeading'
 import { Reveal } from './ui/Reveal'
@@ -9,10 +17,14 @@ import './Contact.css'
 type IconComponent = ComponentType<{ size?: number; className?: string }>
 
 const PROFILE_ICONS: Record<string, IconComponent> = {
+  email: Mail,
   github: GithubIcon,
   linkedin: LinkedinIcon,
-  leetcode: Code2,
-  geeksforgeeks: GraduationCap,
+  leetcode: LeetCodeIcon,
+  geeksforgeeks: GFGIcon,
+  x: XIcon,
+  instagram: InstagramIcon,
+  snapchat: SnapchatIcon,
 }
 
 export function Contact() {
@@ -30,13 +42,15 @@ export function Contact() {
             <div className="contact__links">
               {profiles.map((profile) => {
                 const Icon = PROFILE_ICONS[profile.id] ?? GithubIcon
+                const isEmail = profile.id === 'email'
                 return (
                   <a
                     key={profile.id}
                     href={profile.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="contact__link"
+                    {...(isEmail
+                      ? {}
+                      : { target: '_blank', rel: 'noopener noreferrer' })}
+                    className={`contact__link ${isEmail ? 'contact__link--email' : ''}`}
                   >
                     <span className="contact__link-icon">
                       <Icon size={20} aria-hidden="true" />
@@ -45,16 +59,16 @@ export function Contact() {
                       <span className="contact__link-label">{profile.label}</span>
                       <span className="contact__link-handle mono">{profile.handle}</span>
                     </span>
-                    <ExternalLink size={15} className="contact__link-ext" aria-hidden="true" />
+                    {isEmail ? (
+                      <span className="contact__link-ext contact__link-mail" aria-hidden="true">
+                        <Mail size={15} />
+                      </span>
+                    ) : (
+                      <ExternalLink size={15} className="contact__link-ext" aria-hidden="true" />
+                    )}
                   </a>
                 )
               })}
-            </div>
-
-            <div className="contact__orb" aria-hidden="true">
-              <span className="contact__orb-core" />
-              <span className="contact__orb-ring" />
-              <span className="contact__orb-ring contact__orb-ring--2" />
             </div>
           </div>
         </Reveal>

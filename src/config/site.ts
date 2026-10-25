@@ -20,21 +20,11 @@
 export const siteConfig = {
   name: 'Adnan Mehraj',
   identity: 'AM.dev',
-  role: 'Computer Engineering Student · Developer · Problem Solver',
-  heroPrimary: 'Building things that solve real problems.',
-  heroAlt: 'Curiosity in. Code out.',
-  heroIntro: [
-    "I'm Adnan Mehraj, a Computer Engineering student who enjoys turning ideas into practical software. I build projects across desktop applications, web development, and problem-solving, while strengthening my foundations in data structures, algorithms, and software engineering.",
-    "I'm interested in understanding how things work, building useful tools, and continuously pushing beyond what I already know.",
-  ],
-  heroShort:
-    'Computer Engineering student building practical software, exploring new technologies, and sharpening the problem-solving mindset behind great engineering.',
-  heroMeta: {
-    status: 'BUILDING',
-    focus: 'SOFTWARE ENGINEERING',
-    interests: 'DSA / WEB / CYBERSECURITY',
-    location: 'INDIA',
-  },
+  heroEyebrow: "Hello, I'm",
+  heroName: 'Adnan Mehraj',
+  heroSubtitle: 'Computer Engineering Student & Developer',
+  heroDescription:
+    "I'm passionate about building software that solves real problems. From full-stack web development to data structures and algorithms, I turn ideas into practical applications while continuously exploring new technologies and sharpening my problem-solving skills.",
 
   /** @description Direct-download URL for the CV. Keep empty until configured. */
   resumeDownloadUrl: '',

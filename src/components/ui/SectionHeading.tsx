@@ -1,4 +1,5 @@
 import { Reveal } from './Reveal'
+import './SectionHeading.css'
 
 interface SectionHeadingProps {
   label: string

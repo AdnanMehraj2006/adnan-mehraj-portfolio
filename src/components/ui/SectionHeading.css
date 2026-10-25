@@ -1,5 +1,5 @@
 .section-heading {
-  margin-bottom: clamp(36px, 5vw, 56px);
+  margin-bottom: var(--space-desc-content);
   max-width: 680px;
 }
 
@@ -12,7 +12,7 @@
   color: var(--accent);
   text-transform: uppercase;
   font-family: var(--font-mono);
-  margin-bottom: 16px;
+  margin-bottom: var(--space-eyebrow);
 }
 
 .section-heading__dash {
@@ -28,7 +28,7 @@
 }
 
 .section-heading__desc {
-  margin-top: 16px;
+  margin-top: var(--space-heading-desc);
   color: var(--muted);
   font-size: 17px;
   line-height: 1.65;

@@ -1,7 +1,7 @@
 .about__focus {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  gap: var(--grid-gap);
 }
 
 .about__card {
@@ -42,26 +42,6 @@
   font-size: 15px;
   line-height: 1.7;
   color: var(--muted);
-}
-
-.about__philosophy {
-  margin-top: 44px;
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  padding: 20px 24px;
-  border: 1px dashed var(--line-strong);
-  border-radius: 14px;
-  background: rgba(17, 21, 29, 0.4);
-}
-.about__philosophy-mark {
-  color: var(--accent);
-  font-size: 18px;
-}
-.about__philosophy-text {
-  color: var(--text-soft);
-  font-size: 15px;
-  letter-spacing: 0.02em;
 }
 
 @media (max-width: 920px) {
