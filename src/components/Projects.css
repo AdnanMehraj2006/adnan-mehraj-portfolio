@@ -2,15 +2,10 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--grid-gap);
-  align-items: stretch;
 }
 
 .projects__grid--featured {
   margin-bottom: var(--grid-gap);
-}
-
-.project-card {
-  height: 100%;
 }
 
 .projects__more {
@@ -30,4 +25,17 @@
   .projects__grid--featured {
     grid-template-columns: 1fr;
   }
+}
+
+/*
+ * Small physical touch devices (e.g. a phone with "Request desktop site"
+ * enabled) report a wide CSS viewport, so the rules above still choose a
+ * multi-column layout that gets squeezed into the narrow physical screen.
+ * Force a single column there based on the `.device-narrow` class set by
+ * useNarrowDevice (physical screen + coarse pointer), independent of the
+ * CSS viewport width.
+ */
+.device-narrow .projects__grid,
+.device-narrow .projects__grid--featured {
+  grid-template-columns: 1fr;
 }

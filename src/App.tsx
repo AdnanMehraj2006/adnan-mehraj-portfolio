@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { MotionConfig } from 'framer-motion'
+import { useNarrowDevice } from './hooks/useNarrowDevice'
 import { Navbar } from './components/Navbar'
 import { Hero } from './components/Hero'
 import { About } from './components/About'
@@ -21,6 +22,7 @@ const JOURNEY_SECTION = {
 
 export default function App() {
   const [focusedProjects, setFocusedProjects] = useState<string[]>([])
+  useNarrowDevice()
 
   return (
     <MotionConfig reducedMotion="user">
