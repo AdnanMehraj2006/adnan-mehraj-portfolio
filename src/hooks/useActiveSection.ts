@@ -31,25 +31,41 @@ export function useActiveSection(ids: string[]): string {
       history.scrollRestoration = 'manual'
     }
 
+    // Cross valid hash from the URL. It is only ever *read* here — nothing
+    // on init/refresh writes it, so a requested `#about`/`#contact` can
+    // never be overwritten with `#home`.
+    const hash = window.location.hash.replace('#', '')
+    const target = ids.includes(hash) ? hash : null
+    let restored = false
+    let cancelled = false
+
+    // A single deterministic restore. It runs after first paint and once more
+    // on `window.load` (when fonts/images/3D have settled) so a layout shift
+    // can't leave the page at the top. It waits (via rAF, no arbitrary
+    // timeout) until the target section reports a settled, non-zero offset,
+    // then scrolls exactly once — it never re-runs on user scrolling.
     const restoreHash = () => {
-      const hash = window.location.hash.replace('#', '')
-      if (!ids.includes(hash)) return
-      const el = document.getElementById(hash)
+      if (cancelled || restored || !target) return
+      const el = document.getElementById(target)
       if (!el) return
-      // Cold-load (refresh / direct link) anchor scroll is unreliable;
-      // snap deterministically to the target offset so the correct section
-      // is both restored and highlighted. Re-run on `load` to absorb any
-      // layout shifts from fonts/3D scene after first paint.
       const root = document.documentElement
       const prev = root.style.scrollBehavior
       root.style.scrollBehavior = 'auto'
       const rect = el.getBoundingClientRect()
+      // Layout not settled yet (first frame) — retry on the next frame.
+      if (rect.top === 0 && window.scrollY === 0 && document.readyState !== 'complete') {
+        root.style.scrollBehavior = prev
+        requestAnimationFrame(restoreHash)
+        return
+      }
       const targetY = Math.max(0, window.scrollY + rect.top - NAVBAR_OFFSET + 4)
       window.scrollTo(0, targetY)
       root.style.scrollBehavior = prev
+      restored = true
+      setActive(target)
     }
 
-    restoreHash()
+    requestAnimationFrame(restoreHash)
     window.addEventListener('load', restoreHash)
 
     let ticking = false
@@ -93,11 +109,14 @@ export function useActiveSection(ids: string[]): string {
       }
     }
 
-    compute()
+    // Skip the scroll-based active computation until the hash restore has been
+    // applied, so the highlight isn't momentarily forced to the first section
+    // while the page is still settling at the target.
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll)
 
     return () => {
+      cancelled = true
       window.removeEventListener('load', restoreHash)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)

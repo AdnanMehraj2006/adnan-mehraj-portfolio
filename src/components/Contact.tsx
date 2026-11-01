@@ -1,14 +1,6 @@
 import { ExternalLink, Mail } from 'lucide-react'
 import type { ComponentType } from 'react'
-import {
-  GFGIcon,
-  GithubIcon,
-  InstagramIcon,
-  LeetCodeIcon,
-  LinkedinIcon,
-  SnapchatIcon,
-  XIcon,
-} from './ui/BrandIcons'
+import { InstagramIcon, LinkedinIcon, XIcon } from './ui/BrandIcons'
 import { profiles } from '../data/profiles'
 import { SectionHeading } from './ui/SectionHeading'
 import { Reveal } from './ui/Reveal'
@@ -18,13 +10,9 @@ type IconComponent = ComponentType<{ size?: number; className?: string }>
 
 const PROFILE_ICONS: Record<string, IconComponent> = {
   email: Mail,
-  github: GithubIcon,
   linkedin: LinkedinIcon,
-  leetcode: LeetCodeIcon,
-  geeksforgeeks: GFGIcon,
   x: XIcon,
   instagram: InstagramIcon,
-  snapchat: SnapchatIcon,
 }
 
 export function Contact() {
@@ -41,7 +29,7 @@ export function Contact() {
           <div className="contact__panel">
             <div className="contact__links">
               {profiles.map((profile) => {
-                const Icon = PROFILE_ICONS[profile.id] ?? GithubIcon
+                const Icon = PROFILE_ICONS[profile.id] ?? Mail
                 const isEmail = profile.id === 'email'
                 return (
                   <a

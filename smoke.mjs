@@ -102,49 +102,46 @@ try {
   // contact section: email present once, mailto correct, other links intact
   const contactInfo = await page.evaluate(() => {
     const links = Array.from(document.querySelectorAll('#contact .contact__link'))
-    const email = links.find((a) => a.getAttribute('href') === 'mailto:adnanmehraj@kcet.edu.in')
+    const email = links.find((a) => a.getAttribute('href') === 'mailto:contact@adnanmehraj.tech')
     return {
-      emailCount: links.filter((a) => a.textContent.includes('adnanmehraj@kcet.edu.in')).length,
+      emailCount: links.filter((a) => a.textContent.includes('contact@adnanmehraj.tech')).length,
       emailHref: email ? email.getAttribute('href') : null,
       emailTarget: email ? email.getAttribute('target') : null,
       emailRel: email ? email.getAttribute('rel') : null,
       externalCount: links.filter((a) => a.getAttribute('target') === '_blank').length,
       total: links.length,
-      hasGithub: links.some((a) => a.getAttribute('href')?.includes('github.com/AdnanMehraj2006')),
       hasLinkedIn: links.some((a) => a.getAttribute('href')?.includes('linkedin.com')),
-      hasLeetCode: links.some((a) => a.getAttribute('href')?.includes('leetcode.com')),
-      hasGfg: links.some((a) => a.getAttribute('href')?.includes('geeksforgeeks.org')),
       hasX: links.some((a) => a.getAttribute('href')?.includes('x.com/AdnanMehraj2006')),
       hasInstagram: links.some((a) => a.getAttribute('href')?.includes('instagram.com/adn4nmehraj')),
-      hasSnapchat: links.some((a) => a.getAttribute('href')?.includes('snapchat.com/add/adn4n.mehraj')),
+      noGithub: !links.some((a) => a.getAttribute('href')?.includes('github.com/AdnanMehraj2006')),
+      noLeetCode: !links.some((a) => a.getAttribute('href')?.includes('leetcode.com')),
+      noGfg: !links.some((a) => a.getAttribute('href')?.includes('geeksforgeeks.org')),
+      noSnapchat: !links.some((a) => a.getAttribute('href')?.includes('snapchat.com')),
       order: links.map((a) => a.getAttribute('href')),
     }
   })
   report('email appears exactly once', contactInfo.emailCount === 1)
-  report('email uses correct mailto link', contactInfo.emailHref === 'mailto:adnanmehraj@kcet.edu.in')
+  report('email uses correct mailto link', contactInfo.emailHref === 'mailto:contact@adnanmehraj.tech')
   report('email does not open a new tab', contactInfo.emailTarget === null)
-  report('existing external contact links intact (7)', contactInfo.externalCount === 7)
+  report('existing external contact links intact (3)', contactInfo.externalCount === 3)
   report(
-    'all existing profile links present',
-    contactInfo.hasGithub &&
-      contactInfo.hasLinkedIn &&
-      contactInfo.hasLeetCode &&
-      contactInfo.hasGfg &&
-      contactInfo.hasX &&
-      contactInfo.hasInstagram &&
-      contactInfo.hasSnapchat,
+    'present profiles: LinkedIn + X + Instagram',
+    contactInfo.hasLinkedIn && contactInfo.hasX && contactInfo.hasInstagram,
   )
-  report('contact cards total = 8 (email + 7 profiles)', contactInfo.total === 8)
+  report(
+    'removed profiles absent (GitHub/LeetCode/GFG/Snapchat)',
+    contactInfo.noGithub &&
+      contactInfo.noLeetCode &&
+      contactInfo.noGfg &&
+      contactInfo.noSnapchat,
+  )
+  report('contact cards total = 4 (email + 3 profiles)', contactInfo.total === 4)
 
   const EXPECTED_PROFILE_ORDER = [
-    'mailto:adnanmehraj@kcet.edu.in',
-    'https://github.com/AdnanMehraj2006',
-    'https://leetcode.com/u/Adnan_Mehraj_2006/',
-    'https://www.geeksforgeeks.org/profile/adnanmehraj2006',
+    'mailto:contact@adnanmehraj.tech',
     'https://www.linkedin.com/in/adnan-mehraj-611904344/',
     'https://x.com/AdnanMehraj2006',
     'https://www.instagram.com/adn4nmehraj',
-    'https://snapchat.com/add/adn4n.mehraj',
   ]
   const orderMatches =
     contactInfo.order.length === EXPECTED_PROFILE_ORDER.length &&

@@ -82,7 +82,7 @@ export const skillGroups: SkillGroup[] = [
     skills: [
       { name: 'Backend Development', status: 'exploring', relatedProjects: [] },
       { name: 'Spring Boot', status: 'exploring', relatedProjects: [] },
-      { name: 'Cybersecurity', status: 'exploring', relatedProjects: ['cardshield'] },
+      { name: 'Cybersecurity', status: 'exploring', relatedProjects: [] },
       { name: 'Software Engineering', status: 'exploring', relatedProjects: [] },
     ],
   },
