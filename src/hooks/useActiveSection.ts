@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /** Approximate fixed navbar height (px) used as the active-section band offset. */
 const NAVBAR_OFFSET = 72
@@ -21,6 +21,11 @@ export function useActiveSection(ids: string[]): string {
     return ids.includes(hash) ? hash : ids[0] ?? ''
   })
 
+  // Becomes true once the initial hash restoration has settled. Until then we
+  // never write the URL, so transient active-section detection during first
+  // layout can't overwrite the hash the user actually opened with.
+  const syncReady = useRef(false)
+
   useEffect(() => {
     if (ids.length === 0) return
 
@@ -31,7 +36,7 @@ export function useActiveSection(ids: string[]): string {
       history.scrollRestoration = 'manual'
     }
 
-    // Cross valid hash from the URL. It is only ever *read* here — nothing
+    // Read the valid hash from the URL. It is only ever *read* here — nothing
     // on init/refresh writes it, so a requested `#about`/`#contact` can
     // never be overwritten with `#home`.
     const hash = window.location.hash.replace('#', '')
@@ -39,34 +44,55 @@ export function useActiveSection(ids: string[]): string {
     let restored = false
     let cancelled = false
 
-    // A single deterministic restore. It runs after first paint and once more
-    // on `window.load` (when fonts/images/3D have settled) so a layout shift
-    // can't leave the page at the top. It waits (via rAF, no arbitrary
-    // timeout) until the target section reports a settled, non-zero offset,
-    // then scrolls exactly once — it never re-runs on user scrolling.
+    // If there is no hash to restore, URL syncing may begin immediately.
+    if (!target) syncReady.current = true
+
+    // One deterministic restore. To avoid the mobile race where the browser's
+    // native fragment scroll and our JS scroll fight (leaving the page at the
+    // top), we wait until the target section's layout is genuinely stable —
+    // two consecutive animation frames with the same element offset — then
+    // scroll exactly once. It is event-driven (rAF), not a fixed timeout, and
+    // never re-runs on user scrolling or on the browser's own scroll events.
     const restoreHash = () => {
       if (cancelled || restored || !target) return
       const el = document.getElementById(target)
       if (!el) return
+
       const root = document.documentElement
       const prev = root.style.scrollBehavior
-      root.style.scrollBehavior = 'auto'
-      const rect = el.getBoundingClientRect()
-      // Layout not settled yet (first frame) — retry on the next frame.
-      if (rect.top === 0 && window.scrollY === 0 && document.readyState !== 'complete') {
-        root.style.scrollBehavior = prev
-        requestAnimationFrame(restoreHash)
-        return
+      const measure = () => el.getBoundingClientRect().top + window.scrollY
+
+      let lastY = -1
+      let stableFrames = 0
+      let done = false
+
+      const settle = () => {
+        if (cancelled || restored) return
+        const y = measure()
+        if (y === lastY) stableFrames += 1
+        else stableFrames = 0
+        lastY = y
+        if (stableFrames >= 2 || document.readyState === 'complete') {
+          done = true
+          root.style.scrollBehavior = 'auto'
+          const targetY = Math.max(0, y - NAVBAR_OFFSET + 4)
+          window.scrollTo(0, targetY)
+          root.style.scrollBehavior = prev
+          restored = true
+          syncReady.current = true
+          setActive(target)
+          return
+        }
+        requestAnimationFrame(settle)
       }
-      const targetY = Math.max(0, window.scrollY + rect.top - NAVBAR_OFFSET + 4)
-      window.scrollTo(0, targetY)
-      root.style.scrollBehavior = prev
-      restored = true
-      setActive(target)
+
+      requestAnimationFrame(settle)
+      // Safety: if `stableFrames` never reaches 2 (e.g. a long layout shift),
+      // settle once the window has fully loaded regardless.
+      if (!done) window.addEventListener('load', settle, { once: true })
     }
 
     requestAnimationFrame(restoreHash)
-    window.addEventListener('load', restoreHash)
 
     let ticking = false
 
@@ -117,11 +143,20 @@ export function useActiveSection(ids: string[]): string {
 
     return () => {
       cancelled = true
-      window.removeEventListener('load', restoreHash)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
     }
   }, [ids])
+
+  // Synchronize the URL hash with the active section. Uses replaceState so
+  // scroll-driven changes don't add history entries; explicit navigation
+  // (pushState in the Navbar) still creates back/forward points.
+  useEffect(() => {
+    if (!syncReady.current || !active) return
+    const id = active
+    if (window.location.hash === `#${id}`) return
+    history.replaceState(null, '', `#${id}`)
+  }, [active])
 
   return active
 }
